@@ -353,11 +353,38 @@ private:
 
 template <>
 inline char *JSONCommon::WriteVal(yyjson_val *val, yyjson_alc *alc, idx_t &len) {
-	return yyjson_val_write_opts(val, JSONCommon::WRITE_FLAG, alc, reinterpret_cast<size_t *>(&len), nullptr);
+	size_t len_size_t;
+	// yyjson_val_write_opts must not throw
+	auto ret = yyjson_val_write_opts(val, JSONCommon::WRITE_FLAG, alc, &len_size_t, nullptr);
+	len = len_size_t;
+	return ret;
 }
 template <>
 inline char *JSONCommon::WriteVal(yyjson_mut_val *val, yyjson_alc *alc, idx_t &len) {
-	return yyjson_mut_val_write_opts(val, JSONCommon::WRITE_FLAG, alc, reinterpret_cast<size_t *>(&len), nullptr);
+	size_t len_size_t;
+	// yyjson_mut_val_write_opts must not throw
+	auto ret = yyjson_mut_val_write_opts(val, JSONCommon::WRITE_FLAG, alc, &len_size_t, nullptr);
+	len = len_size_t;
+	return ret;
 }
+
+struct yyjson_doc_deleter {
+	void operator()(yyjson_doc *doc) {
+		if (doc) {
+			yyjson_doc_free(doc);
+		}
+	}
+};
+
+struct yyjson_mut_doc_deleter {
+	void operator()(yyjson_mut_doc *doc) {
+		if (doc) {
+			yyjson_mut_doc_free(doc);
+		}
+	}
+};
+
+using yyjson_doc_ptr = unique_ptr<yyjson_doc, yyjson_doc_deleter>;
+using yyjson_mut_doc_ptr = unique_ptr<yyjson_mut_doc, yyjson_mut_doc_deleter>;
 
 } // namespace duckdb

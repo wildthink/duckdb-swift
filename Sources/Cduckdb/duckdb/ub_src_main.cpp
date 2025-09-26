@@ -37,6 +37,9 @@
 #line 0 "src/main/database.cpp"
 #include "src/main/database.cpp"
 
+#line 0 "src/main/database_file_path_manager.cpp"
+#include "src/main/database_file_path_manager.cpp"
+
 #line 0 "src/main/database_path_and_type.cpp"
 #include "src/main/database_path_and_type.cpp"
 
@@ -54,6 +57,9 @@
 
 #line 0 "src/main/extension_install_info.cpp"
 #include "src/main/extension_install_info.cpp"
+
+#line 0 "src/main/extension_manager.cpp"
+#include "src/main/extension_manager.cpp"
 
 #line 0 "src/main/materialized_query_result.cpp"
 #include "src/main/materialized_query_result.cpp"
